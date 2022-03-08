@@ -1,0 +1,23 @@
+{
+  "name": "bookmark-script",
+  "version": "1.0.0",
+  "description": "",
+  "main": "1.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/IEUNJI/bookmark-script.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/IEUNJI/bookmark-script/issues"
+  },
+  "homepage": "https://github.com/IEUNJI/bookmark-script#readme",
+  "dependencies": {
+    "uglify-js": "^3.15.2"
+  }
+}
