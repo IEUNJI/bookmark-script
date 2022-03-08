@@ -81,7 +81,7 @@
       }, { once: true });
     }
 
-    injectSortButton(buttonContainer) {
+    injectSortButton() {
       const sortButton = document.createElement('div');
       sortButton.setAttribute('type', 'button');
       sortButton.classList.add('el-button', 'el-button--primary', 'el-button--small');
@@ -90,6 +90,8 @@
       textSpan.innerHTML = '排序';
 
       sortButton.append(textSpan);
+
+      const buttonContainer = this.getButtonContainer();
       buttonContainer.append(sortButton);
 
       return sortButton;
@@ -104,8 +106,7 @@
 
     setup() {
       // 注入排序按钮
-      const buttonContainer = this.getButtonContainer();
-      const sortButton = this.injectSortButton(buttonContainer);
+      const sortButton = this.injectSortButton();
 
       // 注册点击事件
       this.addClickListener(sortButton);
