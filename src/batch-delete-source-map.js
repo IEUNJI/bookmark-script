@@ -1,39 +1,50 @@
-function handleSearch(appId) {
-  const urlSearch = `https://sgm-web.jd.com/appManage/app/sourceMaps?id=${appId}`;
+class BatchDeleteSourceMap {
+  constructor() {
+    this.searchBaseUrl = 'https://sgm-web.jd.com/appManage/app/sourceMaps?id=';
+    this.deleteBaseUrl = 'https://sgm-web.jd.com/appManage/app/sourceMap?id=';
+    this.sourceMapList = [];
+  }
 
-  fetch(urlSearch).then(r => r.json()).then(result => {
-    const next = index => {
-      if (index >= result.length) {
-        console.log('done');
-        return;
+  search(appId) {
+    console.log(`查询 App ${appId} ...`);
+    return fetch(`${this.searchBaseUrl}${appId}`).then(r => r.json()).then(result => {
+      this.sourceMapList = result;
+    });
+  }
+
+  delete() {
+    return new Promise((resolve, reject) => {
+      const next = index => {
+        if (index >= this.sourceMapList.length) {
+          console.log('done!');
+          resolve();
+          return;
+        }
+
+        const sourceMapId = this.sourceMapList[index].id;
+
+        this.deleteHandler(sourceMapId).then(() => {
+          next(index + 1);
+        });
       };
 
-      const item = result[index];
-
-      handleDelete(item.id).then(() => {
-        next(index + 1);
-      });
-    };
-
-    next(0);
-  });
-}
-
-function handleDelete(sourceMapId) {
-  return new Promise(resolve => {
-    const urlDelete = `https://sgm-web.jd.com/appManage/app/sourceMap?id=${sourceMapId}`;
-
-    fetch(urlDelete, { method: 'DELETE' }).then(r => r.json()).then(result => {
-      console.log(`删除 SourceMap ${sourceMapId} ${result ? '成功' : '失败'}`);
-
-      resolve();
+      next(0);
     });
-  });
+  }
+
+  deleteHandler(sourceMapId) {
+    return fetch(`${this.deleteBaseUrl}${sourceMapId}`, { method: 'DELETE' }).then(r => r.json()).then(result => {
+      console.log(`删除 SourceMap ${sourceMapId} ${result ? '成功' : '失败'}`);
+    });
+  }
+
+  async start(appId) {
+    await this.search(appId);
+    await this.delete();
+  }
 }
 
-// {id: 472, name: 'B2B-PC-ShoppingMall'}
-// {id: 514, name: 'B2B-PC-MerchantSystem'}
-// {id: 500, name: 'B2B-PC-AdminSystem'}
-// {id: 601, name: 'home-appliances-buy'}
+const batchDeleteSourceMapInstance = new BatchDeleteSourceMap();
 
-handleSearch(472);
+const appList = [472, 514, 500];
+batchDeleteSourceMapInstance.start(appList[0]);
