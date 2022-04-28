@@ -46,5 +46,5 @@ class BatchDeleteSourceMap {
 
 const batchDeleteSourceMapInstance = new BatchDeleteSourceMap();
 
-const appList = [472, 514, 500];
-batchDeleteSourceMapInstance.start(appList[0]);
+const appIdList = [472, 514, 500];
+batchDeleteSourceMapInstance.start(appIdList[0]);
